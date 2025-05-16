@@ -75,6 +75,60 @@ all_neg_words = list(get_all_word(negative_cleaned_tokens_list))
 from nltk import FreqDist
 freq_dist_pos = FreqDist(all_pos_words)
 freq_dist_neg = FreqDist(all_neg_words)
-print(freq_dist_pos.most_common(10))
+print(freq_dist_pos.most_common(10)) #check the frequencies of the top ten tokens.
 print(freq_dist_neg.most_common(10))
-print("hi")
+"""
+6. Preparing data for the model: Split the data into training and testing set. 
+"""
+# Converting Tokens to a Dictionary
+def get_tweets_for_model(cleaned_tokens_list):
+    for tweet_tokens in cleaned_tokens_list:
+        yield dict([token, True] for token in tweet_tokens)
+positive_tokens_for_model = get_tweets_for_model(positive_cleaned_tokens_list)
+negative_tokens_for_model = get_tweets_for_model(negative_cleaned_tokens_list)
+# Splitting the Dataset for Training and Testing the Model
+...
+import random
+
+positive_dataset = [(tweet_dict, "Positive")
+                     for tweet_dict in positive_tokens_for_model]
+
+negative_dataset = [(tweet_dict, "Negative")
+                     for tweet_dict in negative_tokens_for_model]
+
+dataset = positive_dataset + negative_dataset
+
+random.shuffle(dataset) # arrange the data randomly
+
+train_data = dataset[:7000]
+test_data = dataset[7000:]
+"""
+7. Building and Testing the Model: NaiveBayesClassifier model (supervised learning)
+"""
+from nltk import classify
+from nltk import NaiveBayesClassifier
+classifier = NaiveBayesClassifier.train(train_data)
+print("Accuracy is:", classify.accuracy(classifier, test_data))
+print(classifier.show_most_informative_features(10))
+# Test of performance on random tweets from Twitter:
+from nltk.tokenize import word_tokenize
+
+custom_tweet = "Thanks for sharing!"
+nltk.download('punkt_tab')
+
+try:
+    # Step 1: Tokenize
+    custom_tokens = word_tokenize(custom_tweet)
+
+    # Step 2: Clean
+    cleaned_custom_tokens = remove_noise(custom_tokens, stop_words)
+
+    # Step 3: Feature dict
+    custom_tokens_dict = dict([token, True] for token in cleaned_custom_tokens)
+
+    # Step 4: Classify
+    result = classifier.classify(custom_tokens_dict)
+    print("Sentiment:", result)
+
+except Exception as e:
+    print("Error occurred:", type(e).__name__, "-", e)
