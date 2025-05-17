@@ -87,7 +87,6 @@ def get_tweets_for_model(cleaned_tokens_list):
 positive_tokens_for_model = get_tweets_for_model(positive_cleaned_tokens_list)
 negative_tokens_for_model = get_tweets_for_model(negative_cleaned_tokens_list)
 # Splitting the Dataset for Training and Testing the Model
-...
 import random
 
 positive_dataset = [(tweet_dict, "Positive")
@@ -117,16 +116,16 @@ custom_tweet = "Thanks for sharing!"
 nltk.download('punkt_tab')
 
 try:
-    # Step 1: Tokenize
+    # Tokenize
     custom_tokens = word_tokenize(custom_tweet)
 
-    # Step 2: Clean
+    # Clean
     cleaned_custom_tokens = remove_noise(custom_tokens, stop_words)
 
-    # Step 3: Feature dict
+    # Feature dict
     custom_tokens_dict = dict([token, True] for token in cleaned_custom_tokens)
 
-    # Step 4: Classify
+    # Classify
     result = classifier.classify(custom_tokens_dict)
     print("Sentiment:", result)
 
