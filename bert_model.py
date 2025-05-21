@@ -92,5 +92,6 @@ def predict_sentiment(text):
     return "Positive" if label == 1 else "Negative"
 
 
+
 print(predict_sentiment("Thanks for sharing!"))
 
