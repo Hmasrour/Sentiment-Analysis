@@ -91,5 +91,6 @@ def predict_sentiment(text):
     label = torch.argmax(probs, dim=1).item()
     return "Positive" if label == 1 else "Negative"
 
+
 print(predict_sentiment("Thanks for sharing!"))
 
